@@ -56,6 +56,7 @@ const rows = 4;
 const cols = 4;
 let selected = null;
 let pieces = [];
+let audioUnlocked = false;
 let imageSrc = "";
 
 // Charger l'image automatiquement
@@ -66,11 +67,9 @@ img.onload = () => {
     createPuzzle(img);
 };
 const music = document.getElementById("music");
-let audioUnlocked = false;
-
+	
 function unlockAudio() {
     if (audioUnlocked) return;
-
     music.play().then(() => {
         music.pause();
         music.currentTime = 0;
@@ -156,20 +155,12 @@ function shuffle(array) {
 }
 
 function celebrate() {
-    // Masquer le puzzle
     document.getElementById("puzzle").style.display = "none";
-
-    // Afficher l'image complète
-    const img = document.getElementById("fullImage");
-    img.src = imageSrc;
-
-    // Afficher le message
+    const imgEl = document.getElementById("fullImage");
+    imgEl.src = imageSrc;
     document.getElementById("celebration").style.display = "block";
 
-    // Jouer la musique (maintenant autorisé)
-    if (audioUnlocked) {
-         music.play()
-    }
+    if (audioUnlocked) music.play();
 }
 
 function checkWin() {
@@ -185,6 +176,7 @@ function checkWin() {
 
 </body>
 </html>
+
 
 
 
