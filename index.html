@@ -113,12 +113,16 @@ function createPuzzle(img) {
             canvas.correctIndex = r * cols + c;
             canvas.gridIndex = canvas.correctIndex;
             canvas.currentIndex = canvas.correctIndex;
+			canvas.onclick = () => {
+                unlockAudioOnFirstMove();
+                selectPiece(canvas);
+            };
             pieces.push(canvas);
         }
     }
 
     shuffle(pieces);
-    pieces.forEach(p => puzzle.appendChild(p));
+    pieces.forEach(p => puzzle.appendChild(p))	
 }
 
 function selectPiece(piece) {
@@ -177,6 +181,7 @@ function checkWin() {
 
 </body>
 </html>
+
 
 
 
