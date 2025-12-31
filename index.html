@@ -47,7 +47,7 @@
     </div>
 </div>
 
-<audio id="music">
+<audio id="music" preload="auto">
         <source src="Video Project.mp3" type="audio/mpeg">
     </audio>
 
@@ -66,14 +66,21 @@ img.onload = () => {
     createPuzzle(img);
 };
 const music = document.getElementById("music");
+let audioUnlocked = false;
 
-document.addEventListener("click", function unlockAudio() {
+function unlockAudio() {
+    if (audioUnlocked) return;
+
     music.play().then(() => {
         music.pause();
         music.currentTime = 0;
+        audioUnlocked = true;
     }).catch(() => {});
-    document.removeEventListener("click", unlockAudio);
-});
+}
+
+// Interaction utilisateur (PC + mobile)
+document.addEventListener("click", unlockAudio, { once: true });
+document.addEventListener("touchstart", unlockAudio, { once: true });
 
 function createPuzzle(img) {
     const puzzle = document.getElementById("puzzle");
@@ -153,19 +160,16 @@ function celebrate() {
     document.getElementById("puzzle").style.display = "none";
 
     // Afficher l'image complète
-    var img = document.getElementById("fullImage");
+    const img = document.getElementById("fullImage");
     img.src = imageSrc;
 
-    // Afficher le message de célébration
+    // Afficher le message
     document.getElementById("celebration").style.display = "block";
 
-    // Jouer la musique
-    var music = document.getElementById("music");
-    
-    // Certains navigateurs exigent une interaction avant de jouer le son
-    music.play().catch(err => {
-        console.log("Impossible de jouer le son automatiquement :", err);
-    });
+    // Jouer la musique (maintenant autorisé)
+    if (audioUnlocked) {
+        music.play();
+    }
 }
 
 function checkWin() {
@@ -181,3 +185,4 @@ function checkWin() {
 
 </body>
 </html>
+
